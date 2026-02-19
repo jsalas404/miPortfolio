@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import Navbar from "../../components/Navbar.astro"
+import { getCollection } from "astro:content"
+
+// getStaticPaths es obligatorio en rutas dinámicas
+// Le dice a Astro qué páginas generar en el build
+export async function getStaticPaths() {
+  const posts = await getCollection("blog")
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }))
+}
+
+const { post } = Astro.props
+// render() convierte el Markdown a HTML
+const { Content } = await post.render()
+---
+
+<Layout title={`${post.data.title} — Tu Nombre`} description={post.data.description}>
+  <Navbar />
+  <main class="max-w-2xl mx-auto px-6 py-32">
+
+    <!-- Cabecera del post -->
+    <header class="mb-12">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {post.data.tags.map((tag) => (
+          <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-4">
+        {post.data.title}
+      </h1>
+
+      <time class="text-sm text-gray-400">
+        {post.data.date.toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </time>
+    </header>
+
+    <!-- Contenido del post -->
+    <div class="prose prose-gray max-w-none">
+      <Content />
+    </div>
+
+    <!-- Volver al blog -->
+    <a href="/blog" class="inline-block mt-12 text-sm text-gray-400 hover:text-gray-700 transition-colors">
+      ← Volver al blog
+    </a>
+
+  </main>
+</Layout>
