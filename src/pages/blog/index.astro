@@ -10,7 +10,7 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
 ---
 
-<Layout title="Blog — Jose Salas">
+<Layout title="Blog - Jose Salas">
   <Navbar />
   <main class="max-w-5xl mx-auto px-6 py-32">
 
@@ -65,7 +65,7 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
           data-tags={post.data.tags.join(",").toLowerCase()}
           data-date={post.data.date.toISOString()}
         >
-          <a href={`${import.meta.env.BASE_URL}blog/${post.slug}`} class="block h-full">
+          <a href={`/miPortfolio/blog/${post.slug}`} class="block h-full">
 
             <time class="text-xs text-gray-400 mb-3 block">
               {post.data.date.toLocaleDateString("es-ES", {
