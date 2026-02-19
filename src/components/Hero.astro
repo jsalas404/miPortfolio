@@ -1,0 +1,56 @@
+---
+const data = {
+  saludo: "Hola, soy",
+  nombre: "Jose Salas",
+  rol: "Desarrollador Web",
+  descripcion:
+    "Construyo interfaces web limpias y accesibles. Apasionado por la programación y la experiencia de usuario.",
+  cv: "/cv.pdf",
+  github: "https://github.com/jsalas404",
+}
+---
+
+<section class="min-h-screen flex items-center pt-16">
+  <div class="max-w-5xl mx-auto px-6 py-24">
+
+    <!-- Parte superior -->
+    <div class="inline-flex items-center gap-2 mb-8">
+      <span class="w-2 h-2 rounded-full bg-green-400"></span>
+      <span class="text-sm text-gray-500">Disponible para trabajar</span>
+    </div>
+
+    <!-- Nombre y rol -->
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-4">
+      {data.saludo} <br />
+      <span class="text-gray-400">{data.nombre}.</span>
+    </h1>
+
+    <h2 class="text-2xl md:text-3xl font-medium text-gray-400 mb-6">
+      {data.rol}
+    </h2>
+
+    <!-- Descripción -->
+    <p class="max-w-xl text-lg text-gray-500 leading-relaxed mb-10">
+      {data.descripcion}
+    </p>
+
+    <!-- Botones -->
+    <div class="flex flex-wrap gap-4">
+      <a
+        href="#proyectos"
+        class="px-6 py-3 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-700 transition-colors"
+      >
+        Ver proyectos
+      </a>
+      
+      <a
+        href={data.cv}
+        target="_blank"
+        class="px-6 py-3 border border-gray-200 text-gray-700 text-sm font-medium rounded-full hover:border-gray-400 transition-colors"
+      >
+        Descargar CV ↓
+      </a>
+    </div>
+
+  </div>
+</section>
