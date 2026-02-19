@@ -1,0 +1,67 @@
+---
+import * as simpleIcons from "simple-icons"
+
+const skills = [
+  { name: "Vue",        icon: simpleIcons.siVuedotjs },
+  { name: "Laravel",    icon: simpleIcons.siLaravel },
+  { name: "Tailwind",   icon: simpleIcons.siTailwindcss },
+  { name: "JavaScript", icon: simpleIcons.siJavascript },
+  { name: "PHP",        icon: simpleIcons.siPhp },
+  { name: "Node",       icon: simpleIcons.siNodedotjs },
+  { name: "Vite",       icon: simpleIcons.siVite },
+  { name: "Git",        icon: simpleIcons.siGit },
+  { name: "MySQL",      icon: simpleIcons.siMysql },
+]
+---
+
+<section id="sobre-mi" class="py-24 border-t border-gray-100">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <!-- Título de sección -->
+    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
+      Sobre mí
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-16">
+
+      <!-- Texto -->
+      <div class="space-y-4">
+        <p class="text-2xl font-medium text-gray-900 leading-snug">
+          Desarrollador web apasionado por la tecnología.
+        </p>
+        <p class="text-gray-500 leading-relaxed">
+          Soy un apasionado de la informática que comenzó en el mundo de los
+          Sistemas y Redes y que actualmente se especializa en el Desarrollo
+          de Aplicaciones Web. Me encanta descubrir nuevas herramientas y
+          lenguajes que me permitan mejorar mis habilidades y entender mejor
+          el entorno digital.
+        </p>
+        <p class="text-gray-500 leading-relaxed">
+          Me diferencia mi perfil híbrido entre soporte técnico y desarrollo web.
+          Soy una persona organizada, con gran capacidad de aprendizaje autónomo
+          y capaz de aportar soluciones eficientes en proyectos de equipo.
+        </p>
+      </div>
+
+      <!-- Skills -->
+      <div>
+        <p class="text-sm font-medium text-gray-400 mb-4">Frameworks, lenguajes y herramientas</p>
+        <div class="flex flex-wrap gap-2">
+          {skills.map((skill) => (
+            <span class="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-full">
+              <svg
+                role="img"
+                viewBox="0 0 24 24"
+                class="w-4 h-4 shrink-0"
+                style={`fill: #${skill.icon.hex}`}
+                set:html={skill.icon.svg}
+              />
+              {skill.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
