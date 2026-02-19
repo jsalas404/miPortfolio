@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]  # se despliega cada vez que hagas push a main
+    branches: [master]  # se despliega cada vez que hagas push a main
 
 jobs:
   build:
