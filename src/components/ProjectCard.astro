@@ -1,0 +1,41 @@
+---
+// Este componente recibe los datos de UN proyecto
+const { title, description, tags, url, demo } = Astro.props
+---
+
+<article class="group p-6 border border-gray-100 rounded-2xl hover:border-gray-300 transition-colors">
+  
+  <!-- Cabecera -->
+  <div class="flex items-start justify-between gap-4 mb-3">
+    <h3 class="font-semibold text-gray-900 group-hover:text-black transition-colors">
+      {title}
+    </h3>
+
+    <!-- Links -->
+    <div class="flex items-center gap-3 shrink-0">
+      {demo && (
+        <a href={demo} target="_blank" class="text-xs text-gray-400 hover:text-gray-700 transition-colors">
+          Demo ↗
+        </a>
+      )}
+      <a href={url} target="_blank" class="text-xs text-gray-400 hover:text-gray-700 transition-colors">
+        GitHub ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <p class="text-sm text-gray-500 leading-relaxed mb-4">
+    {description}
+  </p>
+
+  <!-- Tags -->
+  <div class="flex flex-wrap gap-2">
+    {tags.map((tag: string) => (
+      <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full">
+        {tag}
+      </span>
+    ))}
+  </div>
+
+</article>

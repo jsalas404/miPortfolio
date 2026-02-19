@@ -1,0 +1,49 @@
+---
+import { projects } from "../data/projects"
+import ProjectCard from "./ProjectCard.astro"
+
+// Separamos featured de los demás
+const featured = projects.filter(p => p.featured)
+const others = projects.filter(p => !p.featured)
+---
+
+<section id="proyectos" class="py-24 border-t border-gray-100">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
+      Proyectos
+    </p>
+
+    <!-- Proyectos destacados -->
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      {featured.map((project) => (
+        <ProjectCard
+          title={project.title}
+          description={project.description}
+          tags={project.tags}
+          url={project.url}
+          demo={project.demo}
+        />
+      ))}
+    </div>
+
+    <!-- Otros proyectos -->
+    {others.length > 0 && (
+      <div>
+        <p class="text-sm font-medium text-gray-400 mb-4 mt-8">Otros proyectos</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          {others.map((project) => (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              tags={project.tags}
+              url={project.url}
+              demo={project.demo}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+  </div>
+</section>
