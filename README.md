@@ -1,43 +1,119 @@
-# Astro Starter Kit: Minimal
+# Portfolio Personal
 
-```sh
-npm create astro@latest -- --template minimal
+Portfolio personal construido con Astro y Tailwind CSS. Minimalista, rápido y desplegado en GitHub Pages.
+
+**[jsalas404.github.io/miPortfolio](https://jsalas404.github.io/miPortfolio)**
+
+---
+
+## Secciones
+
+- **Hero** — Presentación con simulación de terminal
+- **Sobre mí** — Descripción personal y stack de tecnologías con logos SVG
+- **Proyectos** — Tarjetas con proyectos destacados y otros proyectos
+- **Experiencia** — Línea de tiempo con experiencia profesional
+- **Contacto** — Formulario funcional via Web3Forms
+- **Blog** — Artículos en Markdown con buscador y filtros por tag y fecha
+
+---
+
+## Stack
+
+| Tecnología | Uso |
+|---|---|
+| [Astro](https://astro.build) | Framework principal |
+| [Tailwind CSS v4](https://tailwindcss.com) | Estilos |
+| [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography) | Estilos del blog |
+| [Simple Icons](https://simpleicons.org) | Logos SVG de tecnologías |
+| [Web3Forms](https://web3forms.com) | Formulario de contacto |
+| [GitHub Pages](https://pages.github.com) | Despliegue |
+| [GitHub Actions](https://github.com/features/actions) | CI/CD |
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── components/
+│   ├── Navbar.astro
+│   ├── Hero.astro
+│   ├── SobreMi.astro
+│   ├── Proyectos.astro
+│   ├── ProjectCard.astro
+│   ├── Experiencia.astro
+│   ├── Contacto.astro
+│   └── Footer.astro
+├── content/
+│   ├── config.ts
+│   └── blog/
+│       └── *.md
+├── data/
+│   ├── projects.js
+│   └── experience.js
+├── layouts/
+│   └── Layout.astro
+├── pages/
+│   ├── index.astro
+│   └── blog/
+│       ├── index.astro
+│       └── [slug].astro
+└── styles/
+    └── global.css
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-## 🚀 Project Structure
+## Desarrollo local
 
-Inside of your Astro project, you'll see the following folders and files:
+```bash
+# Instalar dependencias
+npm install
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+# Arrancar servidor de desarrollo
+npm run dev
+
+# Build de producción
+npm run build
+
+# Preview del build
+npm run preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Añadir un post al blog
 
-Any static assets, like images, can be placed in the `public/` directory.
+Crea un archivo `.md` en `src/content/blog/`:
 
-## 🧞 Commands
+```md
+---
+title: "Título del post"
+description: "Descripción corta."
+date: 2024-01-15
+tags: ["Tag1", "Tag2"]
+draft: false
+---
 
-All commands are run from the root of the project, from a terminal:
+Contenido en Markdown...
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+El post aparecerá automáticamente en el listado del blog.
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto:
+
+```
+PUBLIC_WEB3FORMS_KEY=tu-access-key
+```
+
+Para producción, añade el secret `PUBLIC_WEB3FORMS_KEY` en **GitHub → Settings → Secrets and variables → Actions**.
+
+---
+
+## Despliegue
+
+El despliegue es automático via GitHub Actions cada vez que se hace push a `master`. El workflow se encuentra en `.github/workflows/deploy.yml`.

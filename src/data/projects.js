@@ -4,7 +4,7 @@ export const projects = [
       description: "Mi portfolio personal desarrollado con Astro y Tailwind.",
       tags: ["Astro", "Tailwind", "JavaScript"],
       url: "https://github.com/jsalas404/miPortfolio",
-      demo: "https://jsalas.dev", // opcional
+      demo: "https://jsalas404.github.io/miPortfolio/",
       featured: true,
     },
     // {
