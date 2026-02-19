@@ -1,46 +1,90 @@
 ---
-import { getCollection } from "astro:content"
 import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/Navbar.astro"
+import Footer from "../../components/Footer.astro"
+import { getCollection } from "astro:content"
 
-const allPosts = await getCollection("blog")
-const posts = allPosts
-  .filter((post) => post.data.draft === false)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const posts = await getCollection("blog", ({ data }) => data.draft === false)
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
 ---
 
-<Layout title="Blog - jsalas">
+<Layout title="Blog — Jose Salas">
   <Navbar />
   <main class="max-w-5xl mx-auto px-6 py-32">
 
-    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
+    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-4">
       Blog
     </p>
+    <h1 class="text-3xl font-bold text-gray-900 mb-12">
+      Artículos y notas
+    </h1>
 
-    <div class="divide-y divide-gray-100">
+    <!-- Buscador y filtros -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-8">
+
+      <input
+        id="search"
+        type="text"
+        placeholder="Buscar por título..."
+        class="flex-1 px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400"
+      />
+
+      <select
+        id="tag-filter"
+        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40"
+      >
+        <option value="">Todos los temas</option>
+        {allTags.map(tag => (
+          <option value={tag}>{tag}</option>
+        ))}
+      </select>
+
+      <select
+        id="date-filter"
+        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40"
+      >
+        <option value="newest">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+      </select>
+
+    </div>
+
+    <!-- Contador de resultados -->
+    <p id="results-count" class="text-xs text-gray-400 mb-6">
+      {posts.length} artículos
+    </p>
+
+    <!-- Grid de cajitas -->
+    <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
       {posts.map((post) => (
-        <article class="py-8 group">
-          <a href={`/blog/${post.slug}`} class="block">
+        <article
+          class="post-card group p-6 border border-gray-100 rounded-2xl hover:border-gray-300 transition-all cursor-pointer"
+          data-title={post.data.title.toLowerCase()}
+          data-tags={post.data.tags.join(",").toLowerCase()}
+          data-date={post.data.date.toISOString()}
+        >
+          <a href={`/blog/${post.slug}`} class="block h-full">
 
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-              <h2 class="font-semibold text-gray-900 group-hover:text-gray-600 transition-colors">
-                {post.data.title}
-              </h2>
-              <time class="text-xs text-gray-400 shrink-0">
-                {post.data.date.toLocaleDateString("es-ES", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            </div>
+            <time class="text-xs text-gray-400 mb-3 block">
+              {post.data.date.toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
 
-            <p class="text-sm text-gray-500 leading-relaxed mb-3">
+            <h2 class="font-semibold text-gray-900 leading-snug mb-3 group-hover:text-gray-600 transition-colors">
+              {post.data.title}
+            </h2>
+
+            <p class="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">
               {post.data.description}
             </p>
 
-            <div class="flex flex-wrap gap-2">
-              {post.data.tags.map((tag: string) => (
+            <div class="flex flex-wrap gap-1.5 mt-auto">
+              {post.data.tags.map(tag => (
                 <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full">
                   {tag}
                 </span>
@@ -52,5 +96,57 @@ const posts = allPosts
       ))}
     </div>
 
+    <!-- Mensaje sin resultados -->
+    <p id="no-results" class="hidden text-center text-gray-400 text-sm py-16">
+      No hay artículos que coincidan con tu búsqueda.
+    </p>
+
   </main>
+  <Footer />
 </Layout>
+
+<script>
+  const searchInput = document.getElementById("search") as HTMLInputElement
+  const tagFilter = document.getElementById("tag-filter") as HTMLSelectElement
+  const dateFilter = document.getElementById("date-filter") as HTMLSelectElement
+  const cards = document.querySelectorAll(".post-card") as NodeListOf<HTMLElement>
+  const noResults = document.getElementById("no-results")
+  const resultsCount = document.getElementById("results-count")
+
+  function filterPosts() {
+    const search = searchInput.value.toLowerCase()
+    const tag = tagFilter.value.toLowerCase()
+    const dateOrder = dateFilter.value
+
+    let visible = Array.from(cards).filter(card => {
+      const title = card.dataset.title || ""
+      const tags = card.dataset.tags || ""
+
+      const matchSearch = title.includes(search)
+      const matchTag = tag === "" || tags.split(",").includes(tag)
+
+      return matchSearch && matchTag
+    })
+
+    visible.sort((a, b) => {
+      const dateA = new Date(a.dataset.date || "").valueOf()
+      const dateB = new Date(b.dataset.date || "").valueOf()
+      return dateOrder === "newest" ? dateB - dateA : dateA - dateB
+    })
+
+    cards.forEach(card => card.style.display = "none")
+
+    const grid = document.getElementById("posts-grid")
+    visible.forEach(card => {
+      card.style.display = "block"
+      grid?.appendChild(card)
+    })
+
+    resultsCount!.textContent = `${visible.length} artículo${visible.length !== 1 ? "s" : ""}`
+    noResults!.classList.toggle("hidden", visible.length > 0)
+  }
+
+  searchInput.addEventListener("input", filterPosts)
+  tagFilter.addEventListener("change", filterPosts)
+  dateFilter.addEventListener("change", filterPosts)
+</script>

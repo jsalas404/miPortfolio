@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/Navbar.astro"
+import Footer from "../../components/Footer.astro"
 import { getCollection } from "astro:content"
 
 // getStaticPaths es obligatorio en rutas dinámicas
@@ -56,4 +57,5 @@ const { Content } = await post.render()
     </a>
 
   </main>
+  <Footer />
 </Layout>

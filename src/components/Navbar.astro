@@ -10,21 +10,59 @@ const links = [
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
   <nav class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-    <!-- Logo / nombre -->
-    <a href="/" class="text-sm font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition-colors">
-      jsalas.dev
-    </a>
 
-    <!-- Links de navegación -->
+    <!-- Logo / nombre -->
+    <div class="flex items-center gap-4">
+      <a href="/" class="text-sm font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition-colors">
+        jsalas.dev
+      </a>
+
+      <!-- Reloj -->
+      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-gray-50 border border-gray-100 rounded-full">
+        <svg class="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span id="clock" class="text-xs font-mono text-gray-400 tabular-nums">00:00:00</span>
+      </div>
+    </div>
+
+    <!-- Links -->
     <ul class="hidden md:flex items-center gap-8">
-      {links.map((link) => (<li>
-        <a
-          href={link.href}
-          class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-        >
-          {link.label}
-        </a>
-      </li>))}
+      {links.map((link) => (
+        <li>
+          
+          <a
+            href={link.href}
+            class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
     </ul>
+
   </nav>
 </header>
+
+<script>
+  function updateClock() {
+    const clock = document.getElementById("clock")
+    if (!clock) return
+
+    // Hora de Canarias — timezone oficial
+    const now = new Date().toLocaleTimeString("es-ES", {
+      timeZone: "Atlantic/Canary",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    })
+
+    clock.textContent = now
+  }
+
+  // Actualiza inmediatamente y luego cada segundo
+  updateClock()
+  setInterval(updateClock, 1000)
+</script>
