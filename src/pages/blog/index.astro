@@ -18,56 +18,49 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
     <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-4">
       Blog
     </p>
-    <h1 class="text-3xl font-bold text-gray-900 mb-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-12 dark:text-gray-100">
       Artículos y notas
     </h1>
 
     <!-- Buscador y filtros -->
     <div class="flex flex-col sm:flex-row gap-3 mb-8">
-
       <input
         id="search"
         type="text"
         placeholder="Buscar por título..."
-        class="flex-1 px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400"
+        class="flex-1 px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500"
       />
-
       <select
         id="tag-filter"
-        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40"
+        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
       >
         <option value="">Todos los temas</option>
         {allTags.map(tag => (
           <option value={tag}>{tag}</option>
         ))}
       </select>
-
       <select
         id="date-filter"
-        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40"
+        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
       >
         <option value="newest">Más recientes</option>
         <option value="oldest">Más antiguos</option>
       </select>
-
     </div>
 
-    <!-- Contador de resultados -->
     <p id="results-count" class="text-xs text-gray-400 mb-6">
       {posts.length} artículos
     </p>
 
-    <!-- Grid de cajitas -->
     <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
       {posts.map((post) => (
         <article
-          class="post-card group p-6 border border-gray-100 rounded-2xl hover:border-gray-300 transition-all cursor-pointer"
+          class="post-card group p-6 border border-gray-100 rounded-2xl hover:border-gray-300 transition-all cursor-pointer dark:border-gray-800 dark:hover:border-gray-600"
           data-title={post.data.title.toLowerCase()}
           data-tags={post.data.tags.join(",").toLowerCase()}
           data-date={post.data.date.toISOString()}
         >
           <a href={url(`blog/${post.slug}`)} class="block h-full">
-
             <time class="text-xs text-gray-400 mb-3 block">
               {post.data.date.toLocaleDateString("es-ES", {
                 year: "numeric",
@@ -75,29 +68,24 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
                 day: "numeric",
               })}
             </time>
-
-            <h2 class="font-semibold text-gray-900 leading-snug mb-3 group-hover:text-gray-600 transition-colors">
+            <h2 class="font-semibold text-gray-900 leading-snug mb-3 group-hover:text-gray-600 transition-colors dark:text-gray-100 dark:group-hover:text-gray-400">
               {post.data.title}
             </h2>
-
-            <p class="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">
+            <p class="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3 dark:text-gray-400">
               {post.data.description}
             </p>
-
             <div class="flex flex-wrap gap-1.5 mt-auto">
               {post.data.tags.map(tag => (
-                <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full">
+                <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                   {tag}
                 </span>
               ))}
             </div>
-
           </a>
         </article>
       ))}
     </div>
 
-    <!-- Mensaje sin resultados -->
     <p id="no-results" class="hidden text-center text-gray-400 text-sm py-16">
       No hay artículos que coincidan con tu búsqueda.
     </p>
@@ -122,10 +110,8 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
     let visible = Array.from(cards).filter(card => {
       const title = card.dataset.title || ""
       const tags = card.dataset.tags || ""
-
       const matchSearch = title.includes(search)
       const matchTag = tag === "" || tags.split(",").includes(tag)
-
       return matchSearch && matchTag
     })
 

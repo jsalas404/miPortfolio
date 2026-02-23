@@ -2,7 +2,7 @@
 import { experience } from "../data/experience"
 ---
 
-<section id="experiencia" class="py-24 border-t border-gray-100">
+<section id="experiencia" class="py-24 border-t border-gray-100 dark:border-gray-800">
   <div class="max-w-5xl mx-auto px-6">
 
     <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
@@ -13,7 +13,7 @@ import { experience } from "../data/experience"
     <div class="relative">
 
       <!-- Línea vertical -->
-      <div class="absolute left-0 top-2 bottom-2 w-px bg-gray-100"></div>
+      <div class="absolute left-0 top-2 bottom-2 w-px bg-gray-100 dark:bg-gray-800"></div>
 
       <!-- Items -->
       <div class="space-y-12">
@@ -21,26 +21,26 @@ import { experience } from "../data/experience"
           <div class="relative pl-8">
 
             <!-- Punto en la línea -->
-            <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-gray-300 -translate-x-1/2"></div>
+            <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 -translate-x-1/2"></div>
 
             <!-- Cabecera -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
               <div>
-                <h3 class="font-semibold text-gray-900">{item.role}</h3>
-                <p class="text-sm text-gray-500">{item.company}</p>
+                <h3 class="font-semibold text-gray-900 dark:text-gray-100">{item.role}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{item.company}</p>
               </div>
               <span class="text-xs text-gray-400 shrink-0">{item.period}</span>
             </div>
 
             <!-- Descripción -->
-            <p class="text-sm text-gray-500 leading-relaxed mb-3">
+            <p class="text-sm text-gray-500 leading-relaxed mb-3 dark:text-gray-400">
               {item.description}
             </p>
 
             <!-- Tags -->
             <div class="flex flex-wrap gap-2">
               {item.tags.map((tag) => (
-                <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full">
+                <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                   {tag}
                 </span>
               ))}

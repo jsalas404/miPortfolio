@@ -51,7 +51,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     <ClientRouter />
   </head>
 
-  <body class="bg-white text-gray-900 font-sans antialiased">
+  <body class="bg-white text-gray-900 font-sans antialiased dark:bg-gray-950 dark:text-gray-100">
+    <script is:inline>
+      const theme = localStorage.getItem("theme")
+      if (theme === "dark") document.documentElement.classList.add("dark")
+    </script>
     <slot />
   </body>
 </html>

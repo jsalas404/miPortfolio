@@ -7,25 +7,22 @@ const stack = [
 ]
 ---
 
-<footer class="border-t border-gray-100 py-12">
+<footer class="border-t border-gray-100 py-12 dark:border-gray-800">
   <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
 
-    <!-- Frase personal -->
     <p class="text-sm text-gray-400 font-mono">
-      <span class="text-gray-300">// </span>
+      <span class="text-gray-300 dark:text-gray-600">// </span>
       El mejor código es el que aún no sé escribir.
     </p>
 
-    <!-- Stack + año -->
-    <p class="text-xs text-gray-300 flex items-center gap-1.5">
+    <p class="text-xs text-gray-300 dark:text-gray-600 flex items-center gap-1.5">
       <span>© {year} Jose Salas · Hecho con</span>
       {stack.map((tech, i) => (
         <>
-          
           <a
             href={tech.url}
             target="_blank"
-            class="text-gray-400 hover:text-gray-700 transition-colors underline underline-offset-4"
+            class="text-gray-400 hover:text-gray-700 transition-colors underline underline-offset-4 dark:text-gray-500 dark:hover:text-gray-300"
           >
             {tech.name}
           </a>
