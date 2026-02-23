@@ -2,7 +2,13 @@
 import "../styles/global.css"
 import { ClientRouter } from "astro:transitions"
 // Recibimos props desde las páginas que usen este layout
-const { title, description = "Mi portfolio personal" } = Astro.props
+const {
+  title,
+  description = "Portfolio personal de Jose Salas — Desarrollador Web",
+  image = "/miPortfolio/og-image.png"
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 ---
 
 <!doctype html>
@@ -10,10 +16,32 @@ const { title, description = "Mi portfolio personal" } = Astro.props
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/miPortfolio/favicon.svg" />
-    <title>{title}</title>
 
+    <!-- SEO básico -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Jose Salas" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph (LinkedIn, Facebook, WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Jose Salas — Portfolio" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/miPortfolio/favicon.svg" />
+
+    <!-- Fuente -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
