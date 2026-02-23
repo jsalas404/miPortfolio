@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/Navbar.astro"
 import Footer from "../../components/Footer.astro"
 import { getCollection } from "astro:content"
+import { url } from "../../utils/url"
 
 // getStaticPaths es obligatorio en rutas dinámicas
 // Le dice a Astro qué páginas generar en el build
@@ -52,7 +53,7 @@ const { Content } = await post.render()
     </div>
 
     <!-- Volver al blog -->
-    <a href="/miPortfolio/blog/" class="inline-block mt-12 text-sm text-gray-400 hover:text-gray-700 transition-colors">
+    <a href={url("blog")} class="inline-block mt-12 text-sm text-gray-400 hover:text-gray-700 transition-colors">
       ← Volver al blog
     </a>
 

@@ -1,12 +1,12 @@
 ---
-const base = import.meta.env.BASE_URL
+import { url } from "../utils/url"
 
 const links = [
-  { href: `${base}#sobre-mi`, label: "Sobre mí" },
-  { href: `${base}#proyectos`, label: "Proyectos" },
-  { href: `${base}#experiencia`, label: "Experiencia" },
-  { href: `${base}#contacto`, label: "Contacto" },
-  { href: `/miPortfolio/blog/`, label: "Blog" },
+  { href: url("#sobre-mi"), label: "Sobre mí" },
+  { href: url("#proyectos"), label: "Proyectos" },
+  { href: url("#experiencia"), label: "Experiencia" },
+  { href: url("#contacto"), label: "Contacto" },
+  { href: url("blog"), label: "Blog" },
 ]
 ---
 
@@ -15,7 +15,7 @@ const links = [
 
     <!-- Logo / nombre -->
     <div class="flex items-center gap-4">
-      <a href={base} class="text-sm font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition-colors">
+      <a href={url("")} class="text-sm font-semibold tracking-tight text-gray-900 hover:text-gray-600 transition-colors">
         jsalas.dev
       </a>
 
@@ -33,7 +33,6 @@ const links = [
     <ul class="hidden md:flex items-center gap-8">
       {links.map((link) => (
         <li>
-          
           <a
             href={link.href}
             class="text-sm text-gray-500 hover:text-gray-900 transition-colors"
@@ -52,7 +51,6 @@ const links = [
     const clock = document.getElementById("clock")
     if (!clock) return
 
-    // Hora de Canarias — timezone oficial
     const now = new Date().toLocaleTimeString("es-ES", {
       timeZone: "Atlantic/Canary",
       hour: "2-digit",
@@ -64,7 +62,6 @@ const links = [
     clock.textContent = now
   }
 
-  // Actualiza inmediatamente y luego cada segundo
   updateClock()
   setInterval(updateClock, 1000)
 </script>

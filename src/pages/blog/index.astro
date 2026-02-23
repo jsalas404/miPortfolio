@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/Navbar.astro"
 import Footer from "../../components/Footer.astro"
 import { getCollection } from "astro:content"
+import { url } from "../../utils/url"
 
 const posts = await getCollection("blog", ({ data }) => data.draft === false)
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -65,7 +66,7 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
           data-tags={post.data.tags.join(",").toLowerCase()}
           data-date={post.data.date.toISOString()}
         >
-          <a href={`/miPortfolio/blog/${post.slug}`} class="block h-full">
+          <a href={url(`blog/${post.slug}`)} class="block h-full">
 
             <time class="text-xs text-gray-400 mb-3 block">
               {post.data.date.toLocaleDateString("es-ES", {
