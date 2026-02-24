@@ -18,24 +18,39 @@ const data = {
       <!-- Columna izquierda — texto -->
       <div>
         <!-- Badge disponible -->
-        <div class="inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-800">
+        <div
+          class="animate-fade-up inline-flex items-center gap-2 mb-8 px-3 py-1 rounded-full border border-gray-100 dark:border-gray-800"
+          style="animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards;"
+        >
           <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
           <span class="text-sm text-gray-500 dark:text-gray-400">Disponible para colaborar</span>
         </div>
 
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-3 dark:text-gray-100">
+        <h1
+          class="animate-fade-up text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-3 dark:text-gray-100"
+          style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;"
+        >
           {data.nombre}
         </h1>
 
-        <p class="text-lg text-gray-400 font-medium mb-6 dark:text-gray-500">
+        <p
+          class="animate-fade-up text-lg text-gray-400 font-medium mb-6 dark:text-gray-500"
+          style="animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;"
+        >
           {data.rol}
         </p>
 
-        <p class="text-sm text-gray-500 leading-relaxed mb-8 max-w-sm dark:text-gray-400">
+        <p
+          class="animate-fade-up text-sm text-gray-500 leading-relaxed mb-8 max-w-sm dark:text-gray-400"
+          style="animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards;"
+        >
           {data.descripcion}
         </p>
 
-        <div class="flex flex-wrap gap-3">
+        <div
+          class="animate-fade-up flex flex-wrap gap-3"
+          style="animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards;"
+        >
           <a
             href="#proyectos"
             class="px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-gray-700 transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
@@ -53,8 +68,10 @@ const data = {
       </div>
 
       <!-- Columna derecha — terminal -->
-      <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm dark:border-gray-800">
-
+      <div
+        class="animate-fade-up rounded-2xl overflow-hidden border border-gray-100 shadow-sm dark:border-gray-800"
+        style="animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;"
+      >
         <!-- Barra superior del terminal -->
         <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 dark:bg-gray-900">
           <span class="w-3 h-3 rounded-full bg-red-400"></span>
@@ -63,7 +80,7 @@ const data = {
           <span class="ml-3 text-xs text-gray-400 font-mono">jose@portfolio ~ </span>
         </div>
 
-        <!-- Contenido del terminal — ya es oscuro, no cambia -->
+        <!-- Contenido del terminal -->
         <div class="bg-gray-950 p-6 font-mono text-sm space-y-3">
           <div>
             <span class="text-green-400">~</span>

@@ -17,14 +17,14 @@ const skills = [
 <section id="sobre-mi" class="py-24 border-t border-gray-100 dark:border-gray-800">
   <div class="max-w-5xl mx-auto px-6">
 
-    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
+    <p class="reveal text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
       Sobre mí
     </p>
 
     <div class="grid md:grid-cols-2 gap-16">
 
       <!-- Texto -->
-      <div class="space-y-4">
+      <div class="reveal reveal-delay-1 space-y-4">
         <p class="text-2xl font-medium text-gray-900 leading-snug dark:text-gray-100">
           Desarrollador web apasionado por la tecnología.
         </p>
@@ -43,7 +43,7 @@ const skills = [
       </div>
 
       <!-- Skills -->
-      <div>
+      <div class="reveal reveal-delay-2">
         <p class="text-sm font-medium text-gray-400 mb-4">Frameworks, lenguajes y herramientas</p>
         <div class="flex flex-wrap gap-2">
           {skills.map((skill) => (

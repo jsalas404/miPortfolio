@@ -5,7 +5,7 @@ import { experience } from "../data/experience"
 <section id="experiencia" class="py-24 border-t border-gray-100 dark:border-gray-800">
   <div class="max-w-5xl mx-auto px-6">
 
-    <p class="text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
+    <p class="reveal text-sm font-medium text-gray-400 uppercase tracking-widest mb-12">
       Experiencia
     </p>
 
@@ -17,8 +17,8 @@ import { experience } from "../data/experience"
 
       <!-- Items -->
       <div class="space-y-12">
-        {experience.map((item) => (
-          <div class="relative pl-8">
+        {experience.map((item, i) => (
+          <div class={`reveal reveal-delay-${Math.min(i + 1, 4)} relative pl-8`}>
 
             <!-- Punto en la línea -->
             <div class="absolute left-0 top-2 w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 -translate-x-1/2"></div>

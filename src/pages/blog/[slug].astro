@@ -23,7 +23,10 @@ const { Content } = await post.render()
 
     <!-- Cabecera del post -->
     <header class="mb-12">
-      <div class="flex flex-wrap gap-2 mb-4">
+      <div
+        class="animate-fade-up flex flex-wrap gap-2 mb-4"
+        style="animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards;"
+      >
         {post.data.tags.map((tag) => (
           <span class="px-2 py-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 rounded-full dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
             {tag}
@@ -31,11 +34,17 @@ const { Content } = await post.render()
         ))}
       </div>
 
-      <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-4 dark:text-gray-100">
+      <h1
+        class="animate-fade-up text-4xl font-bold text-gray-900 leading-tight mb-4 dark:text-gray-100"
+        style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;"
+      >
         {post.data.title}
       </h1>
 
-      <time class="text-sm text-gray-400">
+      <time
+        class="animate-fade-up text-sm text-gray-400"
+        style="animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;"
+      >
         {post.data.date.toLocaleDateString("es-ES", {
           year: "numeric",
           month: "long",
@@ -45,12 +54,19 @@ const { Content } = await post.render()
     </header>
 
     <!-- Contenido del post -->
-    <div class="prose prose-gray max-w-none dark:prose-invert">
+    <div
+      class="animate-fade-up prose prose-gray max-w-none dark:prose-invert"
+      style="animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards;"
+    >
       <Content />
     </div>
 
     <!-- Volver al blog -->
-    <a href={url("blog")} class="inline-block mt-12 text-sm text-gray-400 hover:text-gray-700 transition-colors dark:hover:text-gray-200">
+    <a
+      href={url("blog")}
+      class="animate-fade-up inline-block mt-12 text-sm text-gray-400 hover:text-gray-700 transition-colors dark:hover:text-gray-200"
+      style="animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards;"
+    >
       ← Volver al blog
     </a>
 
