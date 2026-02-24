@@ -23,29 +23,60 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
       Artículos y notas
     </h1>
 
+    <!-- Buscador y filtros -->
     <div class="animate-fade-up flex flex-col sm:flex-row gap-3 mb-8" style="animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;">
+
       <input
         id="search"
         type="text"
         placeholder="Buscar por título..."
         class="flex-1 px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500"
       />
-      <select
-        id="tag-filter"
-        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
-      >
-        <option value="">Todos los temas</option>
-        {allTags.map(tag => (
-          <option value={tag}>{tag}</option>
-        ))}
-      </select>
-      <select
-        id="date-filter"
-        class="px-5 py-3 text-sm border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-colors bg-white text-gray-500 min-w-40 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
-      >
-        <option value="newest">Más recientes</option>
-        <option value="oldest">Más antiguos</option>
-      </select>
+
+      <!-- Custom select — Tags -->
+      <div class="relative min-w-44" id="tag-dropdown">
+        <button
+          id="tag-btn"
+          class="w-full flex items-center justify-between gap-3 px-5 py-3 text-sm border border-gray-200 rounded-2xl text-gray-500 bg-white hover:border-gray-400 transition-colors dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500"
+        >
+          <span id="tag-label">Todos los temas</span>
+          <svg class="w-4 h-4 shrink-0 transition-transform" id="tag-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div id="tag-options" class="hidden absolute z-20 top-full mt-1 w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden dark:bg-gray-900 dark:border-gray-700">
+          <button data-value="" class="tag-option w-full text-left px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-300 dark:hover:bg-gray-800">
+            Todos los temas
+          </button>
+          {allTags.map(tag => (
+            <button data-value={tag} class="tag-option w-full text-left px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-300 dark:hover:bg-gray-800">
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Custom select — Fecha -->
+      <div class="relative min-w-44" id="date-dropdown">
+        <button
+          id="date-btn"
+          class="w-full flex items-center justify-between gap-3 px-5 py-3 text-sm border border-gray-200 rounded-2xl text-gray-500 bg-white hover:border-gray-400 transition-colors dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:border-gray-500"
+        >
+          <span id="date-label">Más recientes</span>
+          <svg class="w-4 h-4 shrink-0 transition-transform" id="date-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div id="date-options" class="hidden absolute z-20 top-full mt-1 w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden dark:bg-gray-900 dark:border-gray-700">
+          <button data-value="newest" class="date-option w-full text-left px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-300 dark:hover:bg-gray-800">
+            Más recientes
+          </button>
+          <button data-value="oldest" class="date-option w-full text-left px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-300 dark:hover:bg-gray-800">
+            Más antiguos
+          </button>
+        </div>
+      </div>
+
     </div>
 
     <p id="results-count" class="animate-fade-up text-xs text-gray-400 mb-6" style="animation-delay: 0.35s; opacity: 0; animation-fill-mode: forwards;">
@@ -95,30 +126,75 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
 </Layout>
 
 <script>
+  // Estado de los filtros
+  let currentTag = ""
+  let currentDate = "newest"
+
   const searchInput = document.getElementById("search") as HTMLInputElement
-  const tagFilter = document.getElementById("tag-filter") as HTMLSelectElement
-  const dateFilter = document.getElementById("date-filter") as HTMLSelectElement
   const cards = document.querySelectorAll(".post-card") as NodeListOf<HTMLElement>
   const noResults = document.getElementById("no-results")
   const resultsCount = document.getElementById("results-count")
 
+  // Custom dropdowns
+  function initDropdown(
+    btnId: string,
+    optionsId: string,
+    labelId: string,
+    chevronId: string,
+    optionClass: string,
+    onChange: (value: string) => void
+  ) {
+    const btn = document.getElementById(btnId) as HTMLButtonElement
+    const options = document.getElementById(optionsId) as HTMLElement
+    const label = document.getElementById(labelId) as HTMLElement
+    const chevron = document.getElementById(chevronId) as HTMLElement
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation()
+      options.classList.toggle("hidden")
+      chevron.style.transform = options.classList.contains("hidden") ? "" : "rotate(180deg)"
+    })
+
+    document.querySelectorAll(`.${optionClass}`).forEach(option => {
+      option.addEventListener("click", () => {
+        const value = (option as HTMLElement).dataset.value || ""
+        label.textContent = (option as HTMLElement).textContent || ""
+        options.classList.add("hidden")
+        chevron.style.transform = ""
+        onChange(value)
+        filterPosts()
+      })
+    })
+  }
+
+  initDropdown("tag-btn", "tag-options", "tag-label", "tag-chevron", "tag-option", (v) => currentTag = v)
+  initDropdown("date-btn", "date-options", "date-label", "date-chevron", "date-option", (v) => currentDate = v)
+
+  // Cerrar dropdowns al clickar fuera
+  document.addEventListener("click", () => {
+    document.getElementById("tag-options")?.classList.add("hidden")
+    document.getElementById("date-options")?.classList.add("hidden")
+    const tagChevron = document.getElementById("tag-chevron") as HTMLElement
+    const dateChevron = document.getElementById("date-chevron") as HTMLElement
+    if (tagChevron) tagChevron.style.transform = ""
+    if (dateChevron) dateChevron.style.transform = ""
+  })
+
   function filterPosts() {
     const search = searchInput.value.toLowerCase()
-    const tag = tagFilter.value.toLowerCase()
-    const dateOrder = dateFilter.value
 
     let visible = Array.from(cards).filter(card => {
       const title = card.dataset.title || ""
       const tags = card.dataset.tags || ""
       const matchSearch = title.includes(search)
-      const matchTag = tag === "" || tags.split(",").includes(tag)
+      const matchTag = currentTag === "" || tags.split(",").includes(currentTag.toLowerCase())
       return matchSearch && matchTag
     })
 
     visible.sort((a, b) => {
       const dateA = new Date(a.dataset.date || "").valueOf()
       const dateB = new Date(b.dataset.date || "").valueOf()
-      return dateOrder === "newest" ? dateB - dateA : dateA - dateB
+      return currentDate === "newest" ? dateB - dateA : dateA - dateB
     })
 
     cards.forEach(card => card.style.display = "none")
@@ -134,6 +210,4 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
   }
 
   searchInput.addEventListener("input", filterPosts)
-  tagFilter.addEventListener("change", filterPosts)
-  dateFilter.addEventListener("change", filterPosts)
 </script>
