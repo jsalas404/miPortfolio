@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar.astro"
 import Footer from "../../components/Footer.astro"
 import { getCollection } from "astro:content"
 import { url } from "../../utils/url"
+import { readingTime } from "../../utils/readingTime"
 
 const posts = await getCollection("blog", ({ data }) => data.draft === false)
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -65,7 +66,7 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              })}
+              })} · {readingTime(post.body)}
             </time>
             <h2 class="font-semibold text-gray-900 leading-snug mb-3 group-hover:text-gray-600 transition-colors dark:text-gray-100 dark:group-hover:text-gray-400">
               {post.data.title}

@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar.astro"
 import Footer from "../../components/Footer.astro"
 import { getCollection } from "astro:content"
 import { url } from "../../utils/url"
+import { readingTime } from "../../utils/readingTime"
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog")
@@ -49,7 +50,7 @@ const { Content } = await post.render()
           year: "numeric",
           month: "long",
           day: "numeric",
-        })}
+        })} · {readingTime(post.body)}
       </time>
     </header>
 
