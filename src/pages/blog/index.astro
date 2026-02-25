@@ -133,87 +133,94 @@ const allTags = [...new Set(posts.flatMap(p => p.data.tags))]
 </Layout>
 
 <script>
-  let currentTag = ""
-  let currentDate = "newest"
+  function initBlog() {
+    let currentTag = ""
+    let currentDate = "newest"
 
-  const searchInput = document.getElementById("search") as HTMLInputElement
-  const cards = document.querySelectorAll(".post-card") as NodeListOf<HTMLElement>
-  const noResults = document.getElementById("no-results")
-  const resultsCount = document.getElementById("results-count")
+    const searchInput = document.getElementById("search") as HTMLInputElement
+    const cards = document.querySelectorAll(".post-card") as NodeListOf<HTMLElement>
+    const noResults = document.getElementById("no-results")
+    const resultsCount = document.getElementById("results-count")
 
-  function setupDropdown(
-    btnId: string,
-    optionsId: string,
-    labelId: string,
-    chevronId: string,
-    optionClass: string,
-    onChange: (value: string) => void
-  ) {
-    const btn = document.getElementById(btnId)!
-    const optionsEl = document.getElementById(optionsId)!
-    const labelEl = document.getElementById(labelId)!
-    const chevronEl = document.getElementById(chevronId)!
+    if (!searchInput) return
 
-    btn.onclick = (e) => {
-      e.stopPropagation()
-      const isHidden = optionsEl.classList.contains("hidden")
-      document.querySelectorAll(".dropdown-options").forEach(el => el.classList.add("hidden"))
-      document.querySelectorAll<HTMLElement>(".dropdown-chevron").forEach(el => el.style.transform = "")
-      if (isHidden) {
-        optionsEl.classList.remove("hidden")
-        chevronEl.style.transform = "rotate(180deg)"
+    function setupDropdown(
+      btnId: string,
+      optionsId: string,
+      labelId: string,
+      chevronId: string,
+      optionClass: string,
+      onChange: (value: string) => void
+    ) {
+      const btn = document.getElementById(btnId)!
+      const optionsEl = document.getElementById(optionsId)!
+      const labelEl = document.getElementById(labelId)!
+      const chevronEl = document.getElementById(chevronId)!
+
+      btn.onclick = (e) => {
+        e.stopPropagation()
+        const isHidden = optionsEl.classList.contains("hidden")
+        document.querySelectorAll(".dropdown-options").forEach(el => el.classList.add("hidden"))
+        document.querySelectorAll<HTMLElement>(".dropdown-chevron").forEach(el => el.style.transform = "")
+        if (isHidden) {
+          optionsEl.classList.remove("hidden")
+          chevronEl.style.transform = "rotate(180deg)"
+        }
       }
+
+      document.querySelectorAll(`.${optionClass}`).forEach(option => {
+        (option as HTMLElement).onclick = (e) => {
+          e.stopPropagation()
+          const value = (option as HTMLElement).dataset.value || ""
+          labelEl.textContent = (option as HTMLElement).textContent?.trim() || ""
+          optionsEl.classList.add("hidden")
+          chevronEl.style.transform = ""
+          onChange(value)
+          filterPosts()
+        }
+      })
     }
 
-    document.querySelectorAll(`.${optionClass}`).forEach(option => {
-      (option as HTMLElement).onclick = (e) => {
-        e.stopPropagation()
-        const value = (option as HTMLElement).dataset.value || ""
-        labelEl.textContent = (option as HTMLElement).textContent?.trim() || ""
-        optionsEl.classList.add("hidden")
-        chevronEl.style.transform = ""
-        onChange(value)
-        filterPosts()
-      }
+    function filterPosts() {
+      const search = searchInput.value.toLowerCase()
+
+      let visible = Array.from(cards).filter(card => {
+        const title = card.dataset.title || ""
+        const tags = card.dataset.tags || ""
+        const matchSearch = title.includes(search)
+        const matchTag = currentTag === "" || tags.split(",").includes(currentTag.toLowerCase())
+        return matchSearch && matchTag
+      })
+
+      visible.sort((a, b) => {
+        const dateA = new Date(a.dataset.date || "").valueOf()
+        const dateB = new Date(b.dataset.date || "").valueOf()
+        return currentDate === "newest" ? dateB - dateA : dateA - dateB
+      })
+
+      cards.forEach(card => card.style.display = "none")
+
+      const grid = document.getElementById("posts-grid")
+      visible.forEach(card => {
+        card.style.display = "block"
+        grid?.appendChild(card)
+      })
+
+      resultsCount!.textContent = `${visible.length} artículo${visible.length !== 1 ? "s" : ""}`
+      noResults!.classList.toggle("hidden", visible.length > 0)
+    }
+
+    setupDropdown("tag-btn", "tag-options", "tag-label", "tag-chevron", "tag-option", (v) => currentTag = v)
+    setupDropdown("date-btn", "date-options", "date-label", "date-chevron", "date-option", (v) => currentDate = v)
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".dropdown-options").forEach(el => el.classList.add("hidden"))
+      document.querySelectorAll<HTMLElement>(".dropdown-chevron").forEach(el => el.style.transform = "")
     })
+
+    searchInput.addEventListener("input", filterPosts)
   }
 
-  setupDropdown("tag-btn", "tag-options", "tag-label", "tag-chevron", "tag-option", (v) => currentTag = v)
-  setupDropdown("date-btn", "date-options", "date-label", "date-chevron", "date-option", (v) => currentDate = v)
-
-  document.addEventListener("click", () => {
-    document.querySelectorAll(".dropdown-options").forEach(el => el.classList.add("hidden"))
-    document.querySelectorAll<HTMLElement>(".dropdown-chevron").forEach(el => el.style.transform = "")
-  })
-
-  function filterPosts() {
-    const search = searchInput.value.toLowerCase()
-
-    let visible = Array.from(cards).filter(card => {
-      const title = card.dataset.title || ""
-      const tags = card.dataset.tags || ""
-      const matchSearch = title.includes(search)
-      const matchTag = currentTag === "" || tags.split(",").includes(currentTag.toLowerCase())
-      return matchSearch && matchTag
-    })
-
-    visible.sort((a, b) => {
-      const dateA = new Date(a.dataset.date || "").valueOf()
-      const dateB = new Date(b.dataset.date || "").valueOf()
-      return currentDate === "newest" ? dateB - dateA : dateA - dateB
-    })
-
-    cards.forEach(card => card.style.display = "none")
-
-    const grid = document.getElementById("posts-grid")
-    visible.forEach(card => {
-      card.style.display = "block"
-      grid?.appendChild(card)
-    })
-
-    resultsCount!.textContent = `${visible.length} artículo${visible.length !== 1 ? "s" : ""}`
-    noResults!.classList.toggle("hidden", visible.length > 0)
-  }
-
-  searchInput.addEventListener("input", filterPosts)
+  initBlog()
+  document.addEventListener("astro:page-load", initBlog)
 </script>

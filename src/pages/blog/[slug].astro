@@ -20,6 +20,10 @@ const { Content } = await post.render()
 
 <Layout title={`${post.data.title} — Jose Salas`} description={post.data.description}>
   <Navbar />
+  <!-- Barra de progreso -->
+  <div class="fixed top-16 left-0 right-0 z-40 h-0.5 bg-gray-100 dark:bg-gray-800">
+    <div id="reading-progress" class="h-full bg-gray-900 dark:bg-white transition-none" style="width: 0%"></div>
+  </div>
   <main class="max-w-2xl mx-auto px-6 py-32">
 
     <!-- Cabecera del post -->
@@ -74,3 +78,23 @@ const { Content } = await post.render()
   </main>
   <Footer />
 </Layout>
+
+<script>
+  function initProgress() {
+    const bar = document.getElementById("reading-progress") as HTMLElement
+    if (!bar) return
+
+    function onScroll() {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = Math.min(Math.max(scrollTop / docHeight * 100, 0), 100)
+      bar.style.width = `${progress}%`
+    }
+
+    window.removeEventListener("scroll", onScroll)
+    window.addEventListener("scroll", onScroll)
+  }
+
+  initProgress()
+  document.addEventListener("astro:page-load", initProgress)
+</script>
