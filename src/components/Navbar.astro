@@ -54,7 +54,10 @@ const links = [
       <ul class="hidden md:flex items-center gap-8">
         {links.map((link) => (
           <li>
-            <a href={link.href} class="text-sm text-gray-500 hover:text-gray-900 transition-colors dark:hover:text-gray-100">
+            <a
+              href={link.href}
+              class="nav-link text-sm text-gray-500 hover:text-gray-900 transition-colors dark:hover:text-gray-100"
+            >
               {link.label}
             </a>
           </li>
@@ -84,7 +87,7 @@ const links = [
         <li>
           <a
             href={link.href}
-            class="mobile-link block py-2.5 px-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800"
+            class="mobile-link mobile-nav-link block py-2.5 px-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800"
           >
             {link.label}
           </a>
@@ -131,7 +134,7 @@ const links = [
     }
   })
 
-  // Menú móvil
+  // Menú móvil + sección activa
   function initNavbar() {
     const menuToggle = document.getElementById("menu-toggle")
     const mobileMenu = document.getElementById("mobile-menu")
@@ -154,6 +157,45 @@ const links = [
         iconClose?.classList.add("hidden")
       }
     })
+
+    // Sección activa — desktop y móvil
+    const sections = document.querySelectorAll("section[id]")
+    const navLinks = document.querySelectorAll(".nav-link") as NodeListOf<HTMLAnchorElement>
+    const mobileNavLinks = document.querySelectorAll(".mobile-nav-link") as NodeListOf<HTMLAnchorElement>
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id
+
+            // Desktop
+            navLinks.forEach(link => {
+              const isActive = link.href.includes(`#${id}`)
+              link.classList.toggle("text-gray-900", isActive)
+              link.classList.toggle("dark:text-white", isActive)
+              link.classList.toggle("font-medium", isActive)
+              link.classList.toggle("text-gray-500", !isActive)
+            })
+
+            // Móvil
+            mobileNavLinks.forEach(link => {
+              const isActive = link.href.includes(`#${id}`)
+              link.classList.toggle("text-gray-900", isActive)
+              link.classList.toggle("dark:text-white", isActive)
+              link.classList.toggle("font-medium", isActive)
+              link.classList.toggle("bg-gray-50", isActive)
+              link.classList.toggle("dark:bg-gray-800", isActive)
+              link.classList.toggle("text-gray-600", !isActive)
+              link.classList.toggle("dark:text-gray-400", !isActive)
+            })
+          }
+        })
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    )
+
+    sections.forEach(section => observer.observe(section))
   }
 
   initNavbar()
